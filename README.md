@@ -1,82 +1,71 @@
 # garden-api
 
-Simple herb garden API with JWT authentication. Provides CRUD endpoints for a small SQLite-backed "plants" table and a `/login` endpoint to obtain a bearer token.
+A simple herb garden REST API with JWT authentication. Create, read, update, and delete plants in a SQLite database.
 
-Quick start
-- Install dependencies:
+Live API: https://garden-api.fly.dev
 
+## Quick Start
+
+Get a token:
+```bash
+TOKEN=$(curl -s -X POST https://garden-api.fly.dev/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"YOUR_USERNAME","password":"YOUR_PASSWORD"}' | jq -r .token)
+```
+
+### API Endpoints
+
+All endpoints require the Authorization: Bearer $TOKEN header.
+
+- GET /plants — List all plants
+- POST /plants — Add a plant (body: {"name":"Basil"})
+- PUT /plants/:id — Update a plant's name
+- DELETE /plants/:id — Remove a plant
+
+Example:
+```bash
+# List
+curl -H "Authorization: Bearer $TOKEN" https://garden-api.fly.dev/plants
+
+# Add
+curl -X POST -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"name":"Mint"}' https://garden-api.fly.dev/plants
+
+# Update
+curl -X PUT -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"name":"Peppermint"}' https://garden-api.fly.dev/plants/1
+
+# Delete
+curl -X DELETE -H "Authorization: Bearer $TOKEN" https://garden-api.fly.dev/plants/1
+```
+
+## Setup (Local Development)
+
+Install dependencies:
 ```bash
 npm install
 ```
 
-Optional: install `jq` (recommended) for parsing JSON responses in the examples below.
-
-Preferred (Homebrew):
-
-```bash
-brew install jq
+Create a .env file:
 ```
-
-Manual (no brew, vendored binary included):
-
-```bash
-# this repository includes a local vendor/jq binary for quick use
-./vendor/jq --version
-
-# or copy it to a directory in your PATH, for example:
-# mkdir -p "$HOME/.local/bin" && cp vendor/jq "$HOME/.local/bin/jq" && chmod +x "$HOME/.local/bin/jq"
-```
-
-- Create a `.env` file (recommended) with at minimum:
-
-```
-JWT_SECRET=replace_this_with_a_strong_secret
+JWT_SECRET=your_secret_key
 DEMO_USER=admin
 DEMO_PASS=password
 PORT=3000
 ```
 
-- Run locally:
-
+Run:
 ```bash
 npm start
 ```
 
-Get a token (example using default demo credentials):
+Then use http://localhost:3000 instead of https://garden-api.fly.dev in the examples above.
 
-```bash
-curl -s -X POST http://localhost:3000/login -H "Content-Type: application/json" -d '{"username":"admin","password":"password"}' | jq
-```
+Optional: install jq for parsing JSON (vendored binary included in ./vendor/jq).
 
-Example endpoints (replace <TOKEN> with the JWT):
+## Tech Stack
 
-- List plants:
-
-```bash
-curl -H "Authorization: Bearer <TOKEN>" http://localhost:3000/plants
-```
-
-- Add a plant:
-
-```bash
-curl -X POST -H "Authorization: Bearer <TOKEN>" -H "Content-Type: application/json" -d '{"name":"Basil"}' http://localhost:3000/plants
-```
-
-- Update a plant (fix spelling):
-
-```bash
-curl -X PUT -H "Authorization: Bearer <TOKEN>" -H "Content-Type: application/json" -d '{"name":"Basilicum"}' http://localhost:3000/plants/1
-```
-
-- Delete a plant:
-
-```bash
-curl -X DELETE -H "Authorization: Bearer <TOKEN>" http://localhost:3000/plants/1
-```
-
-Deploy to Fly.io (brief):
-
-1. Install `flyctl` and log in: `flyctl auth login`.
-2. Create an app: `flyctl apps create` and update `fly.toml` with the app name.
-3. Set secrets on Fly: `flyctl secrets set JWT_SECRET="your_secret" DEMO_USER=... DEMO_PASS=...`
-4. Deploy: `flyctl deploy --remote-only` (or just `flyctl deploy`).
+- Server: Node.js + Express
+- Database: SQLite
+- Auth: JWT
+- Hosting: Fly.io
