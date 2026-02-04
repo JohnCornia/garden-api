@@ -31,6 +31,10 @@ primary_region = 'sjc'
     port = 443
     handlers = ["tls", "http"]
 
+[[mounts]]
+  source = "data"
+  destination = "/data"
+
 [[vm]]
   memory = '1gb'
   cpus = 1
