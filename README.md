@@ -1,6 +1,6 @@
 # garden-api
 
-A simple herb garden REST API with JWT authentication. Create, read, update, and delete plants in a SQLite database.
+A simple herb garden REST API with JWT authentication. Create, read, update, and delete plants in a Postgres database.
 
 Live API: https://garden-api.fly.dev
 
@@ -66,6 +66,6 @@ Optional: install jq for parsing JSON (vendored binary included in ./vendor/jq).
 ## Tech Stack
 
 - Server: Node.js + Express
-- Database: SQLite
+- Database: Postgres
 - Auth: JWT
 - Hosting: Fly.io
