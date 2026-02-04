@@ -1,0 +1,5 @@
+node_modules/
+vendor/
+garden.db
+/.env
+npm-debug.log

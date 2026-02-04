@@ -1,0 +1,12 @@
+[experimental]
+  allowed_public_ports = []
+
+[app]
+  # Set your app name here after `flyctl apps create`
+  # name = "your-fly-app-name"
+
+[env]
+  PORT = "3000"
+
+[build]
+  image = ""
