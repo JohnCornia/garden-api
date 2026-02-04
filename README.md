@@ -80,6 +80,3 @@ Deploy to Fly.io (brief):
 2. Create an app: `flyctl apps create` and update `fly.toml` with the app name.
 3. Set secrets on Fly: `flyctl secrets set JWT_SECRET="your_secret" DEMO_USER=... DEMO_PASS=...`
 4. Deploy: `flyctl deploy --remote-only` (or just `flyctl deploy`).
-
-If you'd like, I can run `npm install`, start the server, or help configure and deploy to Fly.io.
-An API for your garden information
